@@ -7,7 +7,7 @@ object FindMyMessages {
     val flow = FlowIdentifier(args(2), args(3))
     
     val emailToIdMap = FindMe.loadEmailUserMap(auth, flow)
-    val userId = emailToIdMap("eeva-liisa.lennon@affecto.com")
+    val userId = emailToIdMap(auth.userName)
     System.err.println(s"[META] Messages for ${auth.userName} -> $userId")
     
     val http = Http(auth, flow)
