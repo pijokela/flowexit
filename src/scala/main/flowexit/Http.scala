@@ -6,7 +6,12 @@ import scala.io._
 /**
  * https://user:pass@api.flowdock.com/flows/:org/:flow/messages/:message_id
  */
-case class Http(user : String, password : String, org : String, flow : String) {
+case class Http(auth : AuthInfo, flow : FlowIdentifier) {
+  val org = flow.org
+  val flowName = flow.flowName
+  val user = auth.userName
+  val password = auth.password
+  
   def get(requestUrl : String) : String = {
     val url = new URL(requestUrl)
     val connection = url.openConnection().asInstanceOf[HttpURLConnection]
@@ -22,13 +27,19 @@ case class Http(user : String, password : String, org : String, flow : String) {
    * GET /flows/:organization/:flow/messages
    */
   def listMessages() = {
-    val url = s"https://api.flowdock.com/flows/$org/$flow/messages"
+    val url = s"https://api.flowdock.com/flows/$org/$flowName/messages"
     System.err.println("[META] GET: " + url)
     get(url)
   }
   
   def listMessages(untilId : String) = {
-    val url = s"https://api.flowdock.com/flows/$org/$flow/messages?until_id=$untilId"
+    val url = s"https://api.flowdock.com/flows/$org/$flowName/messages?until_id=$untilId"
+    System.err.println("[META] GET: " + url)
+    get(url)
+  }
+  
+  def listUsers() = {
+    val url = s"https://api.flowdock.com/flows/$org/$flowName/users"
     System.err.println("[META] GET: " + url)
     get(url)
   }
