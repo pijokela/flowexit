@@ -44,6 +44,25 @@ case class Http(auth : AuthInfo, flow : FlowIdentifier) {
     get(url)
   }
   
+  def deleteMessage(messageId : String) : Int = {
+	val url = new URL(s"https://api.flowdock.com/flows/$org/$flowName/messages/$messageId")
+	println(url)
+    val httpCon = url.openConnection().asInstanceOf[HttpURLConnection]
+    httpCon.setDoOutput(true)
+    httpCon.setRequestProperty("Authorization", authorizationHeader);
+    httpCon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded" )
+    httpCon.setRequestMethod("DELETE")
+    httpCon.connect()
+    val response = httpCon.getResponseCode()
+    if (response == 400 || response == 401) {
+      println(httpCon.getResponseMessage())
+      println(httpCon.getContentType())
+      println(Source.fromInputStream(httpCon.getInputStream(), "UTF-8").getLines.mkString("\n"))
+    }
+    httpCon.disconnect()
+    response
+  }
+  
   def post(requestUrl : String, params : Map[String, String]) : String = {
     val url = new URL(requestUrl)
     val connection = url.openConnection().asInstanceOf[HttpURLConnection]

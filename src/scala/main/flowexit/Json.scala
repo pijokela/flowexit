@@ -17,6 +17,10 @@ case class Json(raw : Any) {
   }
   
   def str = raw.toString
+  def strNumber = {
+    val string = str
+    string.split("\\.").head
+  }
   def double = raw.asInstanceOf[Double]
   
   def isProp(name : String) = isObj && raw.asInstanceOf[JSONObject].obj.contains(name)
