@@ -14,9 +14,12 @@ There are now several programs that can be run with the same signature:
 
 ExtractUrls
 - list URLs from the flow
+
 FindMe
 - output users from the flow
+
 FindMyMessages
 - output everything written by me
+
 MessagesHighScores
 - output a sorted table of emails and message counts
